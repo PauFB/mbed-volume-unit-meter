@@ -2,26 +2,26 @@
 #include "SoundSensor.h"
 #include <string>
 
-#define N_SAMPLES 1000
+#define MAX_DB 52
 
 int main()
 {
     SoundSensor soundsensor(A0);
+    DigitalOut led(D4);
     Grove_LCD_RGB_Backlight screen(D14, D15);
     while (true) {
-        float sum = 0.0;
-        float avg  = 0.0;
-        for (int i = 0; i < N_SAMPLES; i++) {
-            sum += soundsensor.read_db();
-            ThisThread::sleep_for(1ms);
-        }
-        avg = sum / N_SAMPLES;
-        printf("avg: %f\n", avg);
-        printf("sum: %f\n\n", avg);
-        char avg_str[] = "abc\0";
+        float decibels = soundsensor.read_db();
+        printf("dB: %f\n", decibels);
+
+        char dB_str[16];
+        sprintf(dB_str, "%f", decibels);
         screen.clear();
-        screen.setRGB(255, 192, 203);
-        screen.print(avg_str);
+        screen.locate(0, 0);
+        screen.print(dB_str);
+        char unit_str[] = "dB";
+        screen.locate(14, 0);
+        screen.print(unit_str);
+
         ThisThread::sleep_for(1s);
     }
 }
