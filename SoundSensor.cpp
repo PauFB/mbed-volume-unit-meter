@@ -20,7 +20,6 @@ float SoundSensor::read_db() {
     avg = sqrt(sum / N_SAMPLES);
 
     float vOut = INPUT_VOLTAGE * avg;
-    // sensitivy_v_pa equals ~316 instead of ~3.6
-    float sensitivity_v_pa = pow(10, 50/20);
+    float sensitivity_v_pa = pow(10, 50/20) / 100;
     return 94 + (20 * log10(vOut / sensitivity_v_pa));
 }

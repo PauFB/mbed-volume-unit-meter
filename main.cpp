@@ -2,16 +2,28 @@
 #include "SoundSensor.h"
 #include <string>
 
-#define MAX_DB 52
+#define MAX_DB 130
+#define MAX_BLINK_PERIOD_SEC 1
+
+DigitalOut led(D4);
+
+void flip_led()
+{
+    led = !led;
+}
 
 int main()
 {
     SoundSensor soundsensor(A0);
-    DigitalOut led(D4);
     Grove_LCD_RGB_Backlight screen(D14, D15);
+    Ticker ticker;
+
     while (true) {
         float decibels = soundsensor.read_db();
         printf("dB: %f\n", decibels);
+
+        float period_seconds = MAX_BLINK_PERIOD_SEC - ((decibels / MAX_DB) * MAX_BLINK_PERIOD_SEC);
+        ticker.attach(&flip_led, period_seconds);
 
         char dB_str[16];
         sprintf(dB_str, "%f", decibels);
@@ -21,8 +33,6 @@ int main()
         char unit_str[] = "dB";
         screen.locate(14, 0);
         screen.print(unit_str);
-
-        ThisThread::sleep_for(1s);
     }
 }
 
