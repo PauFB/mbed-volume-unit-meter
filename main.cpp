@@ -1,6 +1,6 @@
 #include "mbed.h"
 #include "SoundSensor.h"
-#include <string>
+#include "Grove_LCD_RGB_Backlight.h"
 
 #define MAX_DB 130
 #define MAX_BLINK_PERIOD_SEC 1

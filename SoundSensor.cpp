@@ -14,7 +14,6 @@ float SoundSensor::read_db() {
     float avg  = 0.0;
     for (int i = 0; i < N_SAMPLES; i++) {
         sum += pow(_sound_sensor.read(), 2);
-        // can not sleep for less than 1ms
         ThisThread::sleep_for(1ms);
     }
     avg = sqrt(sum / N_SAMPLES);
