@@ -25,6 +25,13 @@ int main()
         float period_seconds = MAX_BLINK_PERIOD_SEC - ((decibels / MAX_DB) * MAX_BLINK_PERIOD_SEC);
         ticker.attach(&flip_led, period_seconds);
 
+        if (decibels >= 0 && decibels <= 70)
+            screen.setRGB(0x00, 0xB2, 0x00);
+        else if (decibels <= 100)
+            screen.setRGB(0xFF, 0x32, 0x00);
+        else
+            screen.setRGB(0xB2, 0x00, 0x00);
+
         char dB_str[16];
         sprintf(dB_str, "%f", decibels);
         screen.clear();
